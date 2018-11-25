@@ -1,4 +1,7 @@
 import processing.sound.*;
+import de.voidplus.leapmotion.*;
+
+LeapMotion leap;
 
 SoundFile file0;
 SoundFile file1;
@@ -12,9 +15,31 @@ BandPass bp2;
 BandPass bp3;
 BandPass bp4;
 
+int minHeight = 0;
+int maxHeight = 500;
+
+void leapOnInit() {
+  println("Leap Motion Init");
+}
+void leapOnConnect() {
+  println("Leap Motion Connect");
+}
+void leapOnFrame() {
+  //println("Leap Motion Frame");
+}
+void leapOnDisconnect() {
+  println("Leap Motion Disconnect");
+}
+void leapOnExit() {
+  println("Leap Motion Exit");
+}
+
+
 void setup() {
-  size(640, 360);
+  size(800, 500);
   background(255);
+  
+  leap = new LeapMotion(this);
 
   file0 = new SoundFile(this, "MGMT - Me and Michael.mp3");
   file1 = new SoundFile(this, "MGMT - Me and Michael.mp3");
@@ -48,4 +73,16 @@ void setup() {
 }      
 
 void draw() {
+  
+  if(leap.countHands() == 1) {
+    
+    float amp = map(;
+    
+    file0.amp(0);
+    file1.amp(0);
+    file2.amp(0);
+    file3.amp(0);
+    file4.amp(0);
+  }
+  
 }
