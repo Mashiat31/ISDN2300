@@ -15,8 +15,9 @@ BandPass bp2;
 BandPass bp3;
 BandPass bp4;
 
-int minHeight = 0;
+int minHeight = 300;
 int maxHeight = 500;
+int maxFingerLength = 70;
 
 void leapOnInit() {
   println("Leap Motion Init");
@@ -41,11 +42,11 @@ void setup() {
   
   leap = new LeapMotion(this);
 
-  file0 = new SoundFile(this, "MGMT - Me and Michael.mp3");
-  file1 = new SoundFile(this, "MGMT - Me and Michael.mp3");
-  file2 = new SoundFile(this, "MGMT - Me and Michael.mp3");
-  file3 = new SoundFile(this, "MGMT - Me and Michael.mp3");
-  file4 = new SoundFile(this, "MGMT - Me and Michael.mp3");
+  file0 = new SoundFile(this, "M83 - Bibi The Dog (Audio).mp3");
+  file1 = new SoundFile(this, "M83 - Bibi The Dog (Audio).mp3");
+  file2 = new SoundFile(this, "M83 - Bibi The Dog (Audio).mp3");
+  file3 = new SoundFile(this, "M83 - Bibi The Dog (Audio).mp3");
+  file4 = new SoundFile(this, "M83 - Bibi The Dog (Audio).mp3");
   
   bp0 = new BandPass(this);
   bp1 = new BandPass(this);
@@ -76,13 +77,60 @@ void draw() {
   
   if(leap.countHands() == 1) {
     
-    float amp = map(;
+    for (Hand hand : leap.getHands ()) {
+      PVector handPosition = hand.getPosition();
+      float[] palmFloat = handPosition.array();      
+      float amp = map(palmFloat[1], minHeight, maxHeight, 1, 0);
+      amp = constrain(amp, 0, 1);
+      println("total amplitude : ", amp);
+      
+      Finger finger = hand.getThumb();
+      PVector fingerPosition = finger.getPosition();
+      float[] fingerFloat = fingerPosition.array();
+      float bandAmp = map(fingerFloat[1], palmFloat[1], palmFloat[1] + maxFingerLength, 1, 0);
+      bandAmp = constrain(bandAmp, 0, 1) * amp;
+      file0.amp(bandAmp);
+      println("thumb amplitude : ", bandAmp);
+      
+      finger = hand.getIndexFinger();
+      fingerPosition = finger.getPosition();
+      fingerFloat = fingerPosition.array();
+      bandAmp = map(fingerFloat[1], palmFloat[1], palmFloat[1] + maxFingerLength, 1, 0);
+      bandAmp = constrain(bandAmp, 0, 1) * amp;
+      file1.amp(bandAmp);
+      println("index amplitude : ", bandAmp);
+      
+      finger = hand.getMiddleFinger();
+      fingerPosition = finger.getPosition();
+      fingerFloat = fingerPosition.array();
+      bandAmp = map(fingerFloat[1], palmFloat[1], palmFloat[1] + maxFingerLength, 1, 0);
+      bandAmp = constrain(bandAmp, 0, 1) * amp;
+      file2.amp(bandAmp);
+      println("mid f amplitude : ", bandAmp);
+      
+      finger = hand.getRingFinger();
+      fingerPosition = finger.getPosition();
+      fingerFloat = fingerPosition.array();
+      bandAmp = map(fingerFloat[1], palmFloat[1], palmFloat[1] + maxFingerLength, 1, 0);
+      bandAmp = constrain(bandAmp, 0, 1) * amp;
+      file3.amp(bandAmp);
+      println("ring  amplitude : ", bandAmp);
+      
+      finger = hand.getPinkyFinger();
+      fingerPosition = finger.getPosition();
+      fingerFloat = fingerPosition.array();
+      bandAmp = map(fingerFloat[1], palmFloat[1], palmFloat[1] + maxFingerLength, 1, 0);
+      bandAmp = constrain(bandAmp, 0, 1) * amp;
+      file4.amp(bandAmp);
+      println("pinky amplitude : ", bandAmp);
+    }
     
-    file0.amp(0);
-    file1.amp(0);
-    file2.amp(0);
-    file3.amp(0);
-    file4.amp(0);
+  } else {
+    //file0.amp(0);
+    //file1.amp(0);
+    //file2.amp(0);
+    //file3.amp(0);
+    //file4.amp(0);
   }
   
 }
