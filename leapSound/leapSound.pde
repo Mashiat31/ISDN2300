@@ -1,11 +1,11 @@
-import processing.sound.*;
-import de.voidplus.leapmotion.*;
+import processing.sound.*;          //built-in processing audio library
+import de.voidplus.leapmotion.*;    //leap motion library for processing, uses leap motion sdk v2
 
 LeapMotion leap;
 
 //prog param
-String leftAudio = "M83 - Bibi The Dog (Audio) Left.mp3";
-String rightAudio = "M83 - Bibi The Dog (Audio) Right.mp3";
+String leftAudio = "MGMT - Me and Michael.mp3";    //Pre-split audio with audacity
+String rightAudio = "MGMT - Me and Michael.mp3";
 int binNo = 1024;
 float smoothing = 0.3;
 
@@ -14,7 +14,7 @@ SoundFile file1;
 SoundFile file2;
 SoundFile file3;
 SoundFile file4;
-SoundFile file5;
+SoundFile file5;          //Second channel
 SoundFile file6;
 SoundFile file7;
 SoundFile file8;
@@ -102,17 +102,17 @@ void setup() {
   bp8.process(file8, (8000 - 2000) / 2 + 2000, 8000 - 2000);
   bp9.process(file9, (20000 - 8000) / 2 + 8000, 20000 - 8000);
 
-  file0.play();
-  file1.play();
-  file2.play();
-  file3.play();
-  file4.play();
+  file0.loop();
+  file1.loop();
+  file2.loop();
+  file3.loop();
+  file4.loop();
   
-  file5.play();
-  file6.play();
-  file7.play();
-  file8.play();
-  file9.play();
+  file5.loop();
+  file6.loop();
+  file7.loop();
+  file8.loop();
+  file9.loop();
   
   fft0 = new FFT(this, binNo);  
   in0 = new AudioIn(this, 0);
@@ -124,6 +124,7 @@ void setup() {
 void draw() {
   
   background(100);
+  //leapParticle();
   stroke(0);
   noFill();
   fft0.analyze(bin0);
@@ -156,12 +157,15 @@ void draw() {
       float amp = map(palmFloat[1], minHeight, maxHeight, 0, 1);
       amp = constrain(amp, 0, 1);
       println("total amplitude : ", amp);
+      PVector palmV = new PVector(palmFloat[0], palmFloat[1]);
+      //leapParticle(palmV);
       
       Finger finger = hand.getThumb();
       PVector fingerPosition = finger.getPosition();
       float[] fingerFloat = fingerPosition.array();
       float bandAmp = map(fingerFloat[1], palmFloat[1], palmFloat[1] + maxFingerLength, 1, 0);
       bandAmp = constrain(bandAmp, 0, 1) * amp;
+       //system.particles.add(new Particle(new PVector(mouseX, mouseY)));
       file0.amp(bandAmp);
       file5.amp(bandAmp);
       println("thumb amplitude : ", bandAmp);
@@ -201,8 +205,6 @@ void draw() {
       file4.amp(bandAmp);
       file9.amp(bandAmp);
       println("pinky amplitude : ", bandAmp);
-      
-      fft0.analyze(bin0);
       
     }
     

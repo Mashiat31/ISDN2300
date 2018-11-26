@@ -18,7 +18,17 @@ ParticleSystem system = new ParticleSystem();
   system.update();
 }*/
 
-void leapOnFrame()
+//void leapParticle(PVector plamPos)
+////convert to leap motion
+
+//{ 
+//  system.particles.add(new Particle(plamPos));
+//  system.particles.add(new Particle(plamPos));
+//  system.particles.add(new Particle(plamPos));
+//  system.particles.add(new Particle(plamPos));
+//}
+
+void mouseDragged()
 //convert to leap motion
 
 { 
