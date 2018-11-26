@@ -49,9 +49,9 @@ void leapOnInit() {
 void leapOnConnect() {
   println("Leap Motion Connect");
 }
-void leapOnFrame() {
-  //println("Leap Motion Frame");
-}
+//void leapOnFrame() {
+//  //println("Leap Motion Frame");
+//}
 void leapOnDisconnect() {
   println("Leap Motion Disconnect");
 }
@@ -123,30 +123,30 @@ void setup() {
 
 void draw() {
   
-  //background(100);
-  //stroke(100);
-  //noFill();
-  //fft0.analyze(bin0);
-  //int r = 256;
-  //int lp = 100;
-  //int hp = 800;
-  //float d = TWO_PI / (binNo - (lp + hp));
-  //beginShape();
-  //float x;
-  //float y;
-  //float fftamp;
-  //for (int i = 0; i < binNo - lp - hp; i++) {         
+  background(100);
+  stroke(0);
+  noFill();
+  fft0.analyze(bin0);
+  int r = 256;
+  int lp = 100;
+  int hp = 800;
+  float d = TWO_PI / (hp - lp);
+  beginShape();
+  float x;
+  float y;
+  float fftamp;
+  for (int i = 0; i < hp - lp; i++) {         
     
-  //  sum0[i] += (bin0[i] - sum0[i]) * smoothing;
+    sum0[i] += (bin0[i + lp] - sum0[i]) * smoothing;
     
-  //  fftamp = map(sum0[i + lp], 0, 255, 100, r);
+    fftamp = map(bin0[i + lp], 0, 0.03, 100, r);
     
-  //  x = cos(i * d) * fftamp;
-  //  y = sin(i * d) * fftamp;
+    x = cos(i * d) * fftamp;
+    y = sin(i * d) * fftamp;
     
-  //  vertex(x + width / 2, y + height / 2);
-  //}
-  //endShape(CLOSE);
+    vertex(x + width / 2, y + height / 2);
+  }
+  endShape(CLOSE);
   
   if(leap.countHands() == 1) {
     
